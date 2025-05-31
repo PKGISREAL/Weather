@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block title %}
+Sosi
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="header">
+            <h1>Прогноз погоды</h1>
+        </div>
+
+
+        <div class="search-box">
+            <form method="POST">
+                <input type="text" name="city" placeholder="Введите город" value="{{ weather.city if weather else '' }}">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+
+
+
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if weather %}
+        <div class="current-weather">
+            <h2>{{ weather.city }}</h2>
+            <div class="weather-icon">{{ weather.current_weather_icon }}</div>
+            <div class="temp">{{ weather.current_temp }}°C</div>
+            <p>Ветер: {{ weather.current_windspeed }} км/ч</p>
+        </div>
+
+        <div style="overflow-x: auto; padding: 20px;">
+            <table class="forecast-table">
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Температура</th>
+                        <th>Погода</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for hour in weather.hourly_forecast %}
+                    <tr>
+                        <td class="hour">{{ hour.time }}</td>
+                        <td>{{ hour.temp }}°C</td>
+                        <td>{{ hour.icon }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}
